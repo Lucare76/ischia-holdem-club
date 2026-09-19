@@ -333,3 +333,163 @@ body {
   );
   pointer-events: none;
 }
+
+
+/* CHIP DROP */
+.chipdrop-backdrop {
+  background:
+    radial-gradient(42% 32% at 50% 43%, rgba(215, 181, 109, 0.12), transparent 72%),
+    radial-gradient(36% 28% at 50% 48%, rgba(11, 34, 24, 0.32), transparent 76%);
+}
+
+.chipdrop-vignette {
+  background: radial-gradient(
+    125% 88% at 50% 48%,
+    transparent 46%,
+    rgba(0, 0, 0, 0.93) 100%
+  );
+}
+
+.chipdrop-noise {
+  opacity: 0.03;
+  mix-blend-mode: overlay;
+  background-image: radial-gradient(
+    rgba(255, 255, 255, 0.9) 0.5px,
+    transparent 0.5px
+  );
+  background-size: 3px 3px;
+}
+
+.poker-chip {
+  width: clamp(106px, 24vw, 144px);
+  aspect-ratio: 1;
+  transform-style: preserve-3d;
+  will-change: transform, opacity;
+  margin-left: calc(clamp(106px, 24vw, 144px) / -2);
+  margin-top: calc(clamp(106px, 24vw, 144px) / -2);
+  filter: drop-shadow(0 18px 22px rgba(0, 0, 0, 0.58));
+}
+
+.poker-chip-edge {
+  position: absolute;
+  inset: 4%;
+  border-radius: 50%;
+  transform: translateZ(-8px);
+  background:
+    repeating-conic-gradient(
+      from 0deg,
+      #f1ddab 0deg 10deg,
+      #1d1d1d 10deg 31deg
+    );
+  box-shadow:
+    0 8px 0 #090909,
+    0 10px 16px rgba(0, 0, 0, 0.6);
+}
+
+.poker-chip-face {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  overflow: hidden;
+  background:
+    repeating-conic-gradient(
+      from 0deg,
+      #e9d59d 0deg 9deg,
+      #171717 9deg 30deg
+    );
+  border: 1px solid rgba(244, 221, 162, 0.55);
+  box-shadow:
+    inset 0 0 0 6px rgba(13, 13, 13, 0.88),
+    inset 0 0 0 9px rgba(226, 193, 112, 0.18),
+    inset 0 0 26px rgba(0, 0, 0, 0.48),
+    0 2px 2px rgba(255, 255, 255, 0.12);
+}
+
+.poker-chip-face::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(
+    130deg,
+    rgba(255, 255, 255, 0.18),
+    transparent 31%,
+    transparent 68%,
+    rgba(0, 0, 0, 0.28)
+  );
+  pointer-events: none;
+}
+
+.poker-chip-ring {
+  position: absolute;
+  inset: 19%;
+  border-radius: 50%;
+  border: 1px solid rgba(230, 199, 124, 0.7);
+  box-shadow:
+    0 0 0 3px rgba(7, 7, 7, 0.84),
+    0 0 0 4px rgba(226, 193, 112, 0.24);
+}
+
+.poker-chip-center {
+  position: absolute;
+  inset: 28%;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 38% 32%, #292929, #090909 68%);
+  border: 1px solid rgba(237, 211, 151, 0.56);
+  color: #e8cf91;
+  font-size: clamp(0.72rem, 2.5vw, 0.92rem);
+  font-weight: 700;
+  letter-spacing: 0.11em;
+  text-indent: 0.11em;
+  text-shadow: 0 0 10px rgba(215, 181, 109, 0.24);
+}
+
+.chipdrop-kicker,
+.chipdrop-finale {
+  margin: 0;
+  background: linear-gradient(
+    150deg,
+    #fff2d6 0%,
+    #efdb9f 34%,
+    #cfa85b 62%,
+    #f5e4b7 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-shadow: 0 0 26px rgba(215, 181, 109, 0.12);
+}
+
+.chipdrop-kicker {
+  font-size: clamp(1.85rem, 6vw, 4rem);
+  font-weight: 700;
+  line-height: 0.98;
+  letter-spacing: 0.035em;
+}
+
+.chipdrop-finale {
+  font-size: clamp(2.2rem, 7vw, 5rem);
+  font-weight: 800;
+  line-height: 0.94;
+  letter-spacing: 0.015em;
+  filter: drop-shadow(0 0 22px rgba(215, 181, 109, 0.25));
+}
+
+.chipdrop-sub {
+  margin-top: 0.7rem;
+  color: rgba(243, 234, 217, 0.62);
+  font-size: clamp(0.84rem, 2.2vw, 1rem);
+  font-weight: 300;
+  letter-spacing: 0.05em;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .poker-chip,
+  .chipdrop-line {
+    transition: none !important;
+    animation: none !important;
+  }
+}
