@@ -268,7 +268,7 @@ export default function FirstDealScene() {
                   src="/ihc-logo.png"
                   alt="Ischia Hold'Em Club"
                   fill
-                  sizes="(max-width: 767px) 32vw, 150px"
+                  sizes="(max-width: 767px) 36vw, 165px"
                   className="object-contain"
                 />
               </div>
