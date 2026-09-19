@@ -1,69 +1,208 @@
+"use client";
+
 import Image from "next/image";
+import { useEffect, useRef } from "react";
+import gsap from "gsap";
+import FirstDealScene from "./components/FirstDealScene";
 
 export default function Home() {
+  const heroRef = useRef<HTMLElement>(null);
+  const logoRef = useRef<HTMLDivElement>(null);
+  const eyebrowRef = useRef<HTMLParagraphElement>(null);
+  const subtitleRef = useRef<HTMLParagraphElement>(null);
+  const ctaRef = useRef<HTMLDivElement>(null);
+
+  const handleEnterTheNight = (event: React.MouseEvent<HTMLAnchorElement>) => {
+    const target = document.getElementById("first-deal");
+    if (!target) return;
+
+    event.preventDefault();
+
+    const prefersReducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
+
+    target.scrollIntoView({
+      behavior: prefersReducedMotion ? "auto" : "smooth",
+      block: "start",
+    });
+  };
+
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      const tl = gsap.timeline({
+        defaults: { ease: "power3.out" },
+      });
+
+      tl.fromTo(
+        eyebrowRef.current,
+        { opacity: 0, y: 12, letterSpacing: "0.55em" },
+        {
+          opacity: 1,
+          y: 0,
+          letterSpacing: "0.35em",
+          duration: 1.2,
+        }
+      )
+        .fromTo(
+          logoRef.current,
+          {
+            opacity: 0,
+            scale: 0.88,
+            y: 30,
+            filter: "blur(14px)",
+          },
+          {
+            opacity: 1,
+            scale: 1,
+            y: 0,
+            filter: "blur(0px)",
+            duration: 2.2,
+          },
+          "-=0.55"
+        )
+        .fromTo(
+          subtitleRef.current,
+          { opacity: 0, y: 20 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 1.1,
+          },
+          "-=0.75"
+        )
+        .fromTo(
+          ctaRef.current,
+          { opacity: 0, y: 15 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 1,
+          },
+          "-=0.55"
+        );
+    }, heroRef);
+
+    return () => ctx.revert();
+  }, []);
+
+  useEffect(() => {
+    const hero = heroRef.current;
+    const logo = logoRef.current;
+
+    if (!hero || !logo) return;
+
+    const onMouseMove = (event: MouseEvent) => {
+      if (window.innerWidth < 768) return;
+
+      const x = event.clientX / window.innerWidth - 0.5;
+      const y = event.clientY / window.innerHeight - 0.5;
+
+      gsap.to(logo, {
+        x: x * 14,
+        y: y * 10,
+        rotationY: x * 2.5,
+        rotationX: -y * 2,
+        duration: 1.4,
+        ease: "power3.out",
+      });
+    };
+
+    window.addEventListener("mousemove", onMouseMove);
+
+    return () => window.removeEventListener("mousemove", onMouseMove);
+  }, []);
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert h-5 w-[100px]"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the{" "}
-            <code className="rounded bg-black/[.06] px-1.5 py-0.5 font-mono text-[0.9em] dark:bg-white/[.08]">
-              page.tsx
-            </code>{" "}
-            file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+    <main className="bg-black text-white">
+      <section
+        ref={heroRef}
+        className="relative flex min-h-[100svh] items-center justify-center overflow-hidden bg-black px-6"
+      >
+        <div className="hero-glow absolute inset-0" />
+        <div className="hero-vignette absolute inset-0" />
+        <div className="hero-noise absolute inset-0" />
+
+        <div className="relative z-10 flex w-full max-w-6xl -translate-y-[3vh] flex-col items-center text-center md:-translate-y-[5vh]">
+          <p
+            ref={eyebrowRef}
+            className="mb-4 text-[10px] font-medium tracking-[0.35em] text-[#d7b56d] md:text-xs"
+          >
+            ISCHIA · ITALY
           </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+
+          <div
+            ref={logoRef}
+            className="relative mt-6 mb-4 ml-[-1.6vw] w-[88vw] max-w-[850px] will-change-transform [transform-style:preserve-3d] md:mt-9 md:mb-5 md:ml-[-17px]"
           >
+            <div className="logo-aura absolute inset-[12%] -z-10 rounded-full" />
+
             <Image
-              className="dark:invert h-[14px] w-4"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
+              src="/ihc-logo.png"
+              alt="Ischia Hold'Em Club"
+              width={1400}
+              height={900}
+              priority
+              className="h-auto w-full object-contain"
             />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+
+            <div className="logo-shine pointer-events-none absolute inset-0" />
+          </div>
+
+          <div ref={subtitleRef}>
+            <p className="mx-auto max-w-md text-base font-light tracking-[0.04em] text-white/70 md:text-lg">
+              Più di una partita. Una serata da vivere.
+            </p>
+          </div>
+
+          <div ref={ctaRef} className="mt-8 md:mt-9">
+            <a
+              href="#first-deal"
+              onClick={handleEnterTheNight}
+              className="group inline-flex flex-col items-center gap-4 text-xs font-semibold tracking-[0.32em] text-[#dcb877] transition-colors duration-700 ease-out hover:text-[#f5dca0] md:text-sm"
+            >
+              <span className="relative pb-1.5">
+                ENTER THE NIGHT
+                <span className="absolute inset-x-0 -bottom-0.5 h-px origin-center scale-x-75 bg-gradient-to-r from-transparent via-[#f0c978] to-transparent opacity-50 shadow-[0_0_6px_rgba(240,201,120,0)] transition-all duration-700 ease-out group-hover:scale-x-100 group-hover:opacity-100 group-hover:shadow-[0_0_6px_rgba(240,201,120,0.55)]" />
+              </span>
+              <span className="text-[9px] normal-case tracking-[0.12em] text-white/35">
+                Entra nell&apos;atmosfera
+              </span>
+              <span
+                aria-hidden="true"
+                className="scroll-line mt-1 block h-11 w-px bg-gradient-to-b from-[#f0c978] to-transparent transition-colors duration-700 group-hover:from-[#f5dca0]"
+              />
+              <svg
+                aria-hidden="true"
+                viewBox="0 0 16 8"
+                className="scroll-arrow -mt-1 h-2.5 w-5 text-[#f0c978] transition-colors duration-700 group-hover:text-[#f5dca0]"
+              >
+                <path
+                  d="M1 1L8 7L15 1"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </a>
+          </div>
         </div>
-      </main>
-    </div>
+
+        <div className="absolute left-5 top-5 z-20 text-[9px] tracking-[0.3em] text-white/30 md:left-8 md:top-8">
+          IHC
+        </div>
+
+        <button
+          type="button"
+          className="absolute right-5 top-5 z-20 text-[9px] tracking-[0.25em] text-white/35 transition-colors hover:text-[#d7b56d] md:right-8 md:top-8"
+        >
+          MENU +
+        </button>
+      </section>
+
+      <FirstDealScene />
+    </main>
   );
 }
