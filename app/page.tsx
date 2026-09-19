@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import FirstDealScene from "./components/FirstDealScene";
+import ChipDropScene from "./components/ChipDropScene";
 
 export default function Home() {
   const heroRef = useRef<HTMLElement>(null);
@@ -203,6 +204,7 @@ export default function Home() {
       </section>
 
       <FirstDealScene />
+      <ChipDropScene />
     </main>
   );
 }
